@@ -1,15 +1,25 @@
 from flask import Flask, render_template, request, flash, url_for, redirect
 from Models import db, Admin, Estudiante
+from flask_mysqldb import MySQL
+import os
 import plotly.express as px
 import pandas as pd
 
 app = Flask(__name__)
 
 
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///C:/Users/palac/Documents/prueba-web/escuela.db"
-app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-app.secret_key = 'tu_clave_secreta_aqui'
-db.init_app(app)
+# Configuración de MySQL
+app.config['MYSQL_HOST'] = 'escuelametropolitana.c9ygi46o271u.us-east-2.rds.amazonaws.com'
+app.config['MYSQL_USER'] = 'admin'
+app.config['MYSQL_PASSWORD'] = '12345678'
+app.config['MYSQL_DB'] = 'escuelametropolitana'
+
+mysql = MySQL(app)
+
+# Establecer la clave secreta
+app.secret_key = os.environ.get('FLASK_SECRET_KEY', 'default-secret-key')
+
+
 
 
 # rutas
@@ -27,20 +37,25 @@ def login():
 
         if not usuario or not password:
             flash('Todos los campos son requeridos', 'error')
+            return redirect(url_for('login'))
 
-        admin = Admin.query.filter_by(usuario=usuario, password=password).first()
+        # Realizar la consulta a la base de datos
+        cursor = mysql.connection.cursor()
+        cursor.execute('SELECT * FROM administradores WHERE usuario = %s AND password = %s', (usuario, password))
+        admin = cursor.fetchone()
+        cursor.close()
 
         if admin:
             flash('Inicio exitoso', 'success')
             return redirect(url_for('profesor'))
         else:
-            flash('Correo electrónico o contraseña incorrectos', 'error')  
-            return redirect(url_for('login'))  
-
-        
+            flash('Correo electrónico o contraseña incorrectos', 'error')
+            return redirect(url_for('login'))
     else:
         titulo = "Inicio de sesión"
         return render_template('login.html', titulo=titulo)
+
+
 
 
 # instrucciones

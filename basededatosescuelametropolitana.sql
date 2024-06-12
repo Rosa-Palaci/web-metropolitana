@@ -14,24 +14,27 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
-
 -- Volcando estructura de base de datos para escuelametropolitana
-CREATE DATABASE IF NOT EXISTS `escuelametropolitana` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci */;
-USE `escuelametropolitana`;
+CREATE DATABASE IF NOT EXISTS escuelametropolitana /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci */;
+USE escuelametropolitana;
+
+-- Limpiar la tabla escuelametropolitana.administradores
+DELETE FROM administradores;
 
 -- Volcando estructura para tabla escuelametropolitana.administradores
-CREATE TABLE IF NOT EXISTS `administradores` (
-  `idAdmin` int(11) NOT NULL AUTO_INCREMENT,
-  `usuario` varchar(200) NOT NULL,
-  `password` varchar(200) NOT NULL,
-  PRIMARY KEY (`idAdmin`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+CREATE TABLE IF NOT EXISTS administradores (
+  idAdmin int(11) NOT NULL AUTO_INCREMENT,
+  usuario varchar(200) NOT NULL,
+  password varchar(200) NOT NULL,
+  PRIMARY KEY (idAdmin)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;
 
--- Volcando datos para la tabla escuelametropolitana.administradores: ~3 rows (aproximadamente)
-INSERT INTO `administradores` (`idAdmin`, `usuario`, `password`) VALUES
-	(1, 'leocanete@admin.com', '12345pass'),
-	(2, 'sergioruiz@admin.com', '12345pass'),
-	(3, 'chrisvallejo@admin.com	', '12345pass');
+-- Volcando datos para la tabla escuelametropolitana.administradores: ~4 rows (aproximadamente)
+INSERT INTO administradores (idAdmin, usuario, password) VALUES
+    (1, 'leocanete@admin.com', '12345pass'),
+    (2, 'sergioruiz@admin.com', '12345pass'),
+    (3, 'chrisvallejo@admin.com', '12345pass'),
+    (4, 'marquiños@admin.com', '12345');
 
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;

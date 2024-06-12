@@ -1,0 +1,39 @@
+<link rel="stylesheet" href="{{url_for('static', filename='../static/css/navbar.css')}}">
+<link rel="stylesheet" href="{{url_for('static', filename='../static/css/alumnos.css')}}">
+<script src="{{ url_for('static', filename='js/search.js') }}"></script>
+
+
+<nav class="navbar">
+    <a href="/">
+        <div class="logo">
+            <img src="/static/img/escudo.png" alt="Logo de la Escuela Metropolitana">
+        </div>
+    </a>
+    
+    <div class="nav-links">
+        <button onclick="location.href='{{ url_for('profesor') }}'">Regresar</button>
+    </div>
+</nav>
+<h1>Busca un alumno</h1>
+<h3>Con su no.Lista y grupo</h3>
+<h3>Ejemplo: 10C</h3>
+
+<form action="{{ url_for('alumnos') }}" method="post" class="search-form">
+    <input type="text" name="numLista" placeholder="Número de lista del alumno" required>
+    <button type="submit">Buscar</button>
+</form>
+
+{% if estudiante %}
+    <!-- Resultados de la búsqueda -->
+    <div class="student-details">
+        <h2>Detalles del Alumno:</h2>
+        <p>ID: {{ estudiante.idEstudiante }}</p>
+        <p>Grupo: {{ estudiante.Grupo }}</p>
+        <p>Número de Lista: {{ estudiante.NumLista }}</p>
+        <p>Género: {{ 'Femenino' if estudiante.Genero else 'Masculino' }}</p>
+        <p>Ciclo Escolar: {{ estudiante.CicloEscolar }}</p>
+        <p>Puntaje: {{ estudiante.Puntaje }}</p>
+        <p>Promedio: {{ estudiante.Promedio }}</p>
+        <p>Tiempo Jugado: {{ estudiante.TiempoJugado }}</p>
+    </div>
+{% endif %}

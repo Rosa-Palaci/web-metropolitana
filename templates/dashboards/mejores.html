@@ -1,0 +1,22 @@
+<link rel="stylesheet" href="{{url_for('static', filename='../static/css/navbar.css')}}">
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
+<nav class="navbar">
+    <a href="/">
+        <div class="logo">
+            <img src="/static/img/escudo.png" alt="Logo de la Escuela Metropolitana">
+        </div>
+    </a>
+    
+    <div class="nav-links">
+        <button onclick="location.href='{{ url_for('profesor') }}'">Regresar</button>
+    </div>
+</nav>
+<body>
+    <h1>Top 10 Mejores Puntajes</h1>
+    <div id="mejores-puntajes"></div>
+    <script>
+        var figures = {{ graphJSON|safe }};
+        Plotly.newPlot('mejores-puntajes', figures.data, figures.layout);
+    </script>
+</body>

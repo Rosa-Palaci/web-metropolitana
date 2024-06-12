@@ -1,5 +1,13 @@
 from flask import Flask, render_template 
-app = Flask(__name__)
+from Models import db, Admin
+
+app = Flask(__name__, static_url_path="/static")
+
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///C:/Users/palac/Documents/prueba-web/escuela.db"
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+app.secret_key = 'tu_clave_secreta_aqui'
+db.init_app(app)
+
 # rutas
 @app.route('/')
 def home():

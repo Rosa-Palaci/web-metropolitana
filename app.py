@@ -3,8 +3,8 @@ app = Flask(__name__)
 # rutas
 @app.route('/')
 def home():
-    titulo = "pagina inicio"
-    return render_template('index.html')
+    titulo = "Escuela Metropolitana"
+    return render_template('index.html', titulo=titulo)
 
 # ruta para nosotros
 @app.route('/login')

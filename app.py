@@ -1,4 +1,6 @@
 from flask import Flask, render_template 
+import database as db
+
 
 app = Flask(__name__)
 
@@ -11,8 +13,8 @@ def home():
 # ruta para nosotros
 @app.route('/login')
 def login():
-    titulo = "login"
-    return render_template('login.html')
+    titulo = "Inicio de sesión"
+    return render_template('login.html', titulo=titulo)
 
 # instrucciones
 @app.route('/instrucciones')

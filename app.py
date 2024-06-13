@@ -68,6 +68,30 @@ def administracion():
     titulo = "administracion"
     return render_template('administracion.html', titulo=titulo)
 
+@app.route('/administracion', methods=['POST'])
+def registrar_alumno():
+    try:
+        if not all([request.form.get('num_lista'), request.form.get('grupo'), request.form.get('genero'), request.form.get('ciclo_escolar')]):
+            flash('Todos los campos son requeridos.', 'error')
+            return redirect(url_for('administracion'))  
+        
+        num_lista = request.form['num_lista']
+        grupo = request.form['grupo']
+        genero = request.form['genero']
+        ciclo_escolar = request.form['ciclo_escolar']
+        
+        cur = mysql.connection.cursor()
+        cur.execute("INSERT INTO estudiantes (NumLista, Grupo, Genero, CicloEscolar) VALUES (%s, %s, %s, %s)", 
+                    (num_lista, grupo, genero, ciclo_escolar))
+        mysql.connection.commit()
+        cur.close()
+
+        flash('Estudiante registrado exitosamente.', 'success')
+    except Exception as e:
+        flash('Error al registrar el estudiante: ' + str(e), 'error')
+    
+    return redirect(url_for('administracion'))
+
 # profesor
 @app.route('/profesor')
 def profesor():

@@ -98,3 +98,47 @@
     margin-top: 10px; 
     border-radius: 5px; 
 }
+
+/*Team2*/
+
+#Equipo {
+    width: 100%; 
+    padding: 250px 0;
+    text-align: center;
+    background-color: #FAF5F0; 
+    border-radius: 0; 
+}
+
+.Equipo h1 {
+    color: #333;
+    font-family: 'Arial', sans-serif;
+    margin-bottom: 20px;
+}
+
+.member-card {
+    display: inline-block;
+    width: 22%; 
+    margin: 10px;
+    padding: 20px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.member-card h2 {
+    font-size: 18px;
+    color: #333;
+}
+
+.member-card p {
+    font-size: 16px;
+    color: #666;
+    margin-top: 5px;
+}
+
+@media (max-width: 768px) {
+    .member-card {
+        width: 45%; 
+    }
+}

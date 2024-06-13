@@ -18,22 +18,31 @@
 <h3>Con su no.Lista y grupo</h3>
 <h3>Ejemplo: 10C</h3>
 
-<form action="{{ url_for('alumnos') }}" method="post" class="search-form">
-    <input type="text" name="numLista" placeholder="Número de lista del alumno" required>
+<form method="post">
+    <label for="numLista">Número de Lista:</label>
+    <input type="text" id="numLista" name="numLista" required>
+
+    <label for="grupo">Grupo:</label>
+    <input type="text" id="grupo" name="grupo" required>
+
     <button type="submit">Buscar</button>
 </form>
 
 {% if estudiante %}
-    <!-- Resultados de la búsqueda -->
-    <div class="student-details">
-        <h2>Detalles del Alumno:</h2>
-        <p>ID: {{ estudiante.idEstudiante }}</p>
-        <p>Grupo: {{ estudiante.Grupo }}</p>
-        <p>Número de Lista: {{ estudiante.NumLista }}</p>
-        <p>Género: {{ 'Femenino' if estudiante.Genero else 'Masculino' }}</p>
-        <p>Ciclo Escolar: {{ estudiante.CicloEscolar }}</p>
-        <p>Puntaje: {{ estudiante.Puntaje }}</p>
-        <p>Promedio: {{ estudiante.Promedio }}</p>
-        <p>Tiempo Jugado: {{ estudiante.TiempoJugado }}</p>
-    </div>
+<div>
+    <h2>Detalles del Estudiante:</h2>
+    <p>ID: {{ estudiante['idEstudiante'] }}</p>
+    <p>Grupo: {{ estudiante['Grupo'] }}</p>
+    <p>Número de Lista: {{ estudiante['NumLista'] }}</p>
+    <p>Género: {{ estudiante['Genero'] }}</p>
+    <p>Ciclo Escolar: {{ estudiante['CicloEscolar'] }}</p>
+    <p>Nivel 1: {{ estudiante['Nivel1'] }}</p>
+    <p>Nivel 2: {{ estudiante['Nivel2'] }}</p>
+    <p>Nivel 3: {{ estudiante['Nivel3'] }}</p>
+    <p>Puntaje Total: {{ estudiante['PuntajeTotal'] }}</p>
+    <p>Promedio: {{ estudiante['Promedio'] }}</p>
+    <p>Tiempo Jugado: {{ estudiante['TiempoJugado'] }}</p>
+</div>
+{% elif message %}
+<p>{{ message }}</p>
 {% endif %}

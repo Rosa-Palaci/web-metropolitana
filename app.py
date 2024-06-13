@@ -94,14 +94,12 @@ def alumnos():
         num_lista = request.form['numLista'].strip()
         grupo = request.form['grupo'].strip().upper()
         
-        # Realizar la consulta a la base de datos MySQL
         cursor = mysql.connection.cursor()
         cursor.execute('SELECT * FROM estudiantes WHERE NumLista = %s AND Grupo = %s', (num_lista, grupo))
         estudiante = cursor.fetchone()
         cursor.close()
         
         if estudiante:
-            # Convertir la fila en un diccionario para facilitar el acceso en la plantilla
             estudiante_dict = {
                 'idEstudiante': estudiante[0],
                 'NumLista': estudiante[1],
@@ -123,7 +121,28 @@ def alumnos():
 # grupos
 @app.route('/grupos')
 def grupos():
-    return render_template('dashboards/grupos.html')
+    cursor = mysql.connection.cursor()
+    query = """
+    SELECT Grupo, PuntajeTotal, TiempoJugado
+    FROM estudiantes
+    """
+    cursor.execute(query)
+    resultados = cursor.fetchall()
+    cursor.close()
+
+    if resultados:
+        df = pd.DataFrame(resultados, columns=['Grupo', 'PuntajeTotal', 'TiempoJugado'])
+        
+        fig = px.box(df, x='Grupo', y='PuntajeTotal', title='Distribución de Puntajes por Grupo')
+        fig2 = px.box(df, x='Grupo', y='TiempoJugado', title='Distribución de Tiempo Jugado por Grupo')
+
+        graphHTML = fig.to_html(full_html=False)
+        graphHTML2 = fig2.to_html(full_html=False)
+
+        return render_template('dashboards/grupos.html', graphHTML=graphHTML, graphHTML2=graphHTML2)
+    else:
+        return render_template('dashboards/grupos.html', message="No hay datos disponibles.")
+
 
 # genero
 @app.route('/genero')
@@ -139,14 +158,11 @@ def genero():
     cursor.close()
 
     if resultados:
-        # Usando pandas para manejar los datos
         df = pd.DataFrame(resultados, columns=['Genero', 'PuntajePromedio'])
         
-        # Crear una gráfica de barras con Plotly
         fig = px.bar(df, x='Genero', y='PuntajePromedio', title='Puntaje Promedio por Género',
                      labels={'PuntajePromedio': 'Puntaje Promedio', 'Genero': 'Género'})
         
-        # Convertir la figura en HTML
         graphHTML = fig.to_html(full_html=False)
         
         return render_template('dashboards/genero.html', graphHTML=graphHTML)

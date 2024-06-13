@@ -104,3 +104,10 @@ paths:
           description: "Muestra el puntaje promedio por género"
         204:
           description: "No hay datos disponibles"
+
+  /administracion:
+    get:
+      summary: "Página de administración"
+      responses:
+        200:
+          description: "Muestra la página de administración donde se pueden registrar estudiantes."

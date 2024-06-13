@@ -4,6 +4,12 @@ body {
     padding: 0;
 }
 
+.main {
+    margin-top: 84px;
+    padding: 0 450px;  
+}
+
+
 .container-flex {
     display: flex;
     justify-content: center; 

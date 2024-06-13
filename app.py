@@ -128,7 +128,31 @@ def grupos():
 # genero
 @app.route('/genero')
 def genero():
-    return render_template('dashboards/genero.html')
+    cursor = mysql.connection.cursor()
+    query = """
+    SELECT Genero, AVG(PuntajeTotal) as PuntajePromedio
+    FROM estudiantes
+    GROUP BY Genero
+    """
+    cursor.execute(query)
+    resultados = cursor.fetchall()
+    cursor.close()
+
+    if resultados:
+        # Usando pandas para manejar los datos
+        df = pd.DataFrame(resultados, columns=['Genero', 'PuntajePromedio'])
+        
+        # Crear una gráfica de barras con Plotly
+        fig = px.bar(df, x='Genero', y='PuntajePromedio', title='Puntaje Promedio por Género',
+                     labels={'PuntajePromedio': 'Puntaje Promedio', 'Genero': 'Género'})
+        
+        # Convertir la figura en HTML
+        graphHTML = fig.to_html(full_html=False)
+        
+        return render_template('dashboards/genero.html', graphHTML=graphHTML)
+    else:
+        return render_template('dashboards/genero.html', message="No hay datos disponibles.")
+
 
 # bloque de prueba
 if __name__ == "__main__":

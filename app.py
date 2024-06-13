@@ -1,5 +1,4 @@
 from flask import Flask, render_template, request, flash, url_for, redirect
-from Models import db, Admin, Estudiante
 from flask_mysqldb import MySQL
 import os
 import plotly.express as px
@@ -76,14 +75,7 @@ def profesor():
 # mejores
 @app.route('/mejores')
 def mejores():
-    estudiantes = Estudiante.query.order_by(Estudiante.Puntaje.desc()).limit(10).all()
-    df = pd.DataFrame([{
-        'Nombre': f"Estudiante {e.idEstudiante}",
-        'Puntaje': int(e.Puntaje)
-    } for e in estudiantes])
-    fig = px.bar(df, x='Nombre', y='Puntaje', title="Top 10 Mejores Puntajes")
-    graphJSON = fig.to_json()
-    return render_template('dashboards/mejores.html', graphJSON=graphJSON)
+    return render_template('dashboards/mejores.html')
 
 # peores
 @app.route('/peores')
@@ -99,18 +91,35 @@ def promedios():
 @app.route('/alumnos', methods=['GET', 'POST'])
 def alumnos():
     if request.method == 'POST':
-        input_data = request.form.get('numLista').strip()
-        if len(input_data) > 1:
-            num_lista = input_data[:-1]  # Todo excepto el último carácter
-            grupo = input_data[-1]  # El último carácter
-            estudiante = Estudiante.query.filter_by(NumLista=num_lista, Grupo=grupo).first()
-            if estudiante:
-                return render_template('dashboards/alumnos.html', estudiante=estudiante)
-            else:
-                return render_template('dashboards/alumnos.html', message="No se encontró el estudiante.")
+        num_lista = request.form['numLista'].strip()
+        grupo = request.form['grupo'].strip().upper()
+        
+        # Realizar la consulta a la base de datos MySQL
+        cursor = mysql.connection.cursor()
+        cursor.execute('SELECT * FROM estudiantes WHERE NumLista = %s AND Grupo = %s', (num_lista, grupo))
+        estudiante = cursor.fetchone()
+        cursor.close()
+        
+        if estudiante:
+            # Convertir la fila en un diccionario para facilitar el acceso en la plantilla
+            estudiante_dict = {
+                'idEstudiante': estudiante[0],
+                'NumLista': estudiante[1],
+                'Grupo': estudiante[2],
+                'Genero': estudiante[3],
+                'CicloEscolar': estudiante[4],
+                'Nivel1': estudiante[5],
+                'Nivel2': estudiante[6],
+                'Nivel3': estudiante[7],
+                'PuntajeTotal': estudiante[8],
+                'Promedio': float(estudiante[9]) if estudiante[9] is not None else None,
+                'TiempoJugado': estudiante[10]
+            }
+            return render_template('dashboards/alumnos.html', estudiante=estudiante_dict)
         else:
-            return render_template('dashboards/alumnos.html', message="Formato de entrada inválido.")
+            return render_template('dashboards/alumnos.html', message="No se encontró el estudiante.")
     return render_template('dashboards/alumnos.html')
+
 # grupos
 @app.route('/grupos')
 def grupos():

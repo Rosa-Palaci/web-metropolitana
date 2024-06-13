@@ -47,7 +47,7 @@ def login():
 
         if admin:
             flash('Inicio exitoso', 'success')
-            return redirect(url_for('profesor'), code=303)
+            return redirect(url_for('profesor'))
         else:
             flash('Correo electrónico o contraseña incorrectos', 'error')
             return redirect(url_for('login'))

@@ -75,6 +75,7 @@ def profesor():
 # mejores
 @app.route('/mejores')
 def mejores():
+    titulo = "Mejores"
     cursor = mysql.connection.cursor()
 
     grupos = ['A', 'B', 'C']
@@ -94,7 +95,7 @@ def mejores():
     cursor.close()
 
     if mejores_estudiantes:
-        return render_template('dashboards/mejores.html', mejores_estudiantes=mejores_estudiantes)
+        return render_template('dashboards/mejores.html', mejores_estudiantes=mejores_estudiantes, titulo=titulo)
     else:
         return render_template('dashboards/mejores.html', message="No hay suficientes datos para mostrar.")
 
@@ -102,6 +103,7 @@ def mejores():
 # peores
 @app.route('/peores')
 def peores():
+    titulo = "Peores"
     cursor = mysql.connection.cursor()
 
     grupos = ['A', 'B', 'C']
@@ -121,7 +123,7 @@ def peores():
     cursor.close()
 
     if peores_estudiantes:
-        return render_template('dashboards/peores.html', peores_estudiantes=peores_estudiantes)
+        return render_template('dashboards/peores.html', peores_estudiantes=peores_estudiantes, titulo=titulo)
     else:
         return render_template('dashboards/peores.html', message="No hay suficientes datos para mostrar.")
 
@@ -129,6 +131,7 @@ def peores():
 # promedios
 @app.route('/promedios')
 def promedios():
+    titulo = "Promedios"
     cursor = mysql.connection.cursor()
     query = """
     SELECT AVG(Nivel1) AS PromedioNivel1, AVG(Nivel2) AS PromedioNivel2, AVG(Nivel3) AS PromedioNivel3
@@ -150,7 +153,7 @@ def promedios():
         
         graphHTML = fig.to_html(full_html=False)
         
-        return render_template('dashboards/promedios.html', graphHTML=graphHTML)
+        return render_template('dashboards/promedios.html', graphHTML=graphHTML, titulo=titulo)
     else:
         return render_template('dashboards/promedios.html', message="No hay datos disponibles.")
 
@@ -158,6 +161,7 @@ def promedios():
 # alumnos
 @app.route('/alumnos', methods=['GET', 'POST'])
 def alumnos():
+    titulo = "Alumnos"
     if request.method == 'POST':
         num_lista = request.form['numLista'].strip()
         grupo = request.form['grupo'].strip().upper()
@@ -184,11 +188,12 @@ def alumnos():
             return render_template('dashboards/alumnos.html', estudiante=estudiante_dict)
         else:
             return render_template('dashboards/alumnos.html', message="No se encontró el estudiante.")
-    return render_template('dashboards/alumnos.html')
+    return render_template('dashboards/alumnos.html', titulo=titulo)
 
 # grupos
 @app.route('/grupos')
 def grupos():
+    titulo = "Grupos"
     cursor = mysql.connection.cursor()
     query = """
     SELECT Grupo, PuntajeTotal, TiempoJugado
@@ -207,7 +212,7 @@ def grupos():
         graphHTML = fig.to_html(full_html=False)
         graphHTML2 = fig2.to_html(full_html=False)
 
-        return render_template('dashboards/grupos.html', graphHTML=graphHTML, graphHTML2=graphHTML2)
+        return render_template('dashboards/grupos.html', graphHTML=graphHTML, graphHTML2=graphHTML2, titulo=titulo)
     else:
         return render_template('dashboards/grupos.html', message="No hay datos disponibles.")
 
@@ -215,6 +220,7 @@ def grupos():
 # genero
 @app.route('/genero')
 def genero():
+    titulo = "Género"
     cursor = mysql.connection.cursor()
     query = """
     SELECT Genero, AVG(PuntajeTotal) as PuntajePromedio
@@ -233,7 +239,7 @@ def genero():
         
         graphHTML = fig.to_html(full_html=False)
         
-        return render_template('dashboards/genero.html', graphHTML=graphHTML)
+        return render_template('dashboards/genero.html', graphHTML=graphHTML,titulo=titulo)
     else:
         return render_template('dashboards/genero.html', message="No hay datos disponibles.")
 

@@ -85,7 +85,31 @@ def peores():
 # promedios
 @app.route('/promedios')
 def promedios():
-    return render_template('dashboards/promedios.html')
+    cursor = mysql.connection.cursor()
+    query = """
+    SELECT AVG(Nivel1) AS PromedioNivel1, AVG(Nivel2) AS PromedioNivel2, AVG(Nivel3) AS PromedioNivel3
+    FROM estudiantes
+    """
+    cursor.execute(query)
+    resultados = cursor.fetchone()
+    cursor.close()
+
+    if resultados:
+        df = pd.DataFrame([resultados], columns=['PromedioNivel1', 'PromedioNivel2', 'PromedioNivel3'])
+        
+        fig = px.bar(df, title='Promedio Global por Nivel')
+        fig.update_layout(
+            xaxis_title='Nivel',
+            yaxis_title='Promedio de Puntaje',
+            xaxis=dict(tickmode='array', tickvals=[0, 1, 2], ticktext=['Nivel 1', 'Nivel 2', 'Nivel 3'])
+        )
+        
+        graphHTML = fig.to_html(full_html=False)
+        
+        return render_template('dashboards/promedios.html', graphHTML=graphHTML)
+    else:
+        return render_template('dashboards/promedios.html', message="No hay datos disponibles.")
+
 
 # alumnos
 @app.route('/alumnos', methods=['GET', 'POST'])

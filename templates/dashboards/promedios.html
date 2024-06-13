@@ -10,4 +10,9 @@
         <button onclick="location.href='{{ url_for('profesor') }}'">Regresar</button>
     </div>
 </nav>
-<h1>Promedios</h1>
+ <h1>Promedio Global por Nivel</h1>
+    {% if graphHTML %}
+        <div>{{ graphHTML|safe }}</div>
+    {% else %}
+        <p>{{ message }}</p>
+    {% endif %}

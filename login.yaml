@@ -1,0 +1,16 @@
+parameters:
+  - name: usuario
+    in: formData
+    type: string
+    required: true
+    description: Nombre de usuario
+  - name: password
+    in: formData
+    type: string
+    required: true
+    description: Contraseña del usuario
+responses:
+  200:
+    description: Inicio de sesión exitoso
+  400:
+    description: Error de validación

@@ -3,8 +3,10 @@ from flask_mysqldb import MySQL
 import os
 import plotly.express as px
 import pandas as pd
+from flasgger import Swagger
 
 app = Flask(__name__)
+swagger = Swagger(app, template_file='api_spec.yaml')
 
 
 # Configuración de MySQL
@@ -17,9 +19,6 @@ mysql = MySQL(app)
 
 # Establecer la clave secreta
 app.secret_key = os.environ.get('FLASK_SECRET_KEY', 'default-secret-key')
-
-
-
 
 # rutas
 @app.route('/')
@@ -38,7 +37,6 @@ def login():
             flash('Todos los campos son requeridos', 'error')
             return redirect(url_for('login'))
 
-        # Realizar la consulta a la base de datos
         cursor = mysql.connection.cursor()
         cursor.execute('SELECT * FROM administradores WHERE usuario = %s AND password = %s', (usuario, password))
         admin = cursor.fetchone()
@@ -53,9 +51,6 @@ def login():
     else:
         titulo = "Inicio de sesión"
         return render_template('login.html', titulo=titulo)
-
-
-
 
 # instrucciones
 @app.route('/instrucciones')

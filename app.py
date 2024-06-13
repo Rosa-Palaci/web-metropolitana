@@ -75,12 +75,56 @@ def profesor():
 # mejores
 @app.route('/mejores')
 def mejores():
-    return render_template('dashboards/mejores.html')
+    cursor = mysql.connection.cursor()
+
+    grupos = ['A', 'B', 'C']
+    mejores_estudiantes = {}
+    for grupo in grupos:
+        query = f"""
+        SELECT NumLista, Grupo, PuntajeTotal
+        FROM estudiantes
+        WHERE Grupo = '{grupo}'
+        ORDER BY PuntajeTotal DESC
+        LIMIT 10
+        """
+        cursor.execute(query)
+        resultados = cursor.fetchall()
+        mejores_estudiantes[grupo] = resultados
+
+    cursor.close()
+
+    if mejores_estudiantes:
+        return render_template('dashboards/mejores.html', mejores_estudiantes=mejores_estudiantes)
+    else:
+        return render_template('dashboards/mejores.html', message="No hay suficientes datos para mostrar.")
+
 
 # peores
 @app.route('/peores')
 def peores():
-    return render_template('dashboards/peores.html')
+    cursor = mysql.connection.cursor()
+
+    grupos = ['A', 'B', 'C']
+    peores_estudiantes = {}
+    for grupo in grupos:
+        query = f"""
+        SELECT NumLista, Grupo, PuntajeTotal
+        FROM estudiantes
+        WHERE Grupo = '{grupo}'
+        ORDER BY PuntajeTotal ASC
+        LIMIT 10
+        """
+        cursor.execute(query)
+        resultados = cursor.fetchall()
+        peores_estudiantes[grupo] = resultados
+
+    cursor.close()
+
+    if peores_estudiantes:
+        return render_template('dashboards/peores.html', peores_estudiantes=peores_estudiantes)
+    else:
+        return render_template('dashboards/peores.html', message="No hay suficientes datos para mostrar.")
+
 
 # promedios
 @app.route('/promedios')

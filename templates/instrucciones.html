@@ -1,121 +1,43 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Instrucciones del juego</title>
-    <link rel="stylesheet" href="{{url_for('static', filename='css/instrucciones.css')}}">
-    <link rel="icon" type="image/png" href="{{ url_for('static', filename='\img\escudo.png') }}">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 0;
-        }
-        header {
-            background-color: #333;
-            color: #fff;
-            padding: 10px 0;
-            text-align: center;
-        }
-        .logo img {
-            height: 50px;
-        }
-        .nav-links a, .nav-links button {
-            color: #fff;
-            margin: 0 15px;
-            text-decoration: none;
-        }
-        .nav-links button {
-            background: none;
-            border: none;
-            cursor: pointer;
-        }
-        .main {
-            padding: 20px;
-            text-align: center;
-        }
-        .instructions {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 20px;
-        }
-        .instruction-item {
-            background: #fff;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            padding: 20px;
-            width: 200px;
-            text-align: center;
-        }
-        .instruction-item img {
-            width: 100%;
-            height: auto;
-            border-radius: 8px;
-        }
-        .instruction-item p {
-            margin: 10px 0 0;
-        }
-        footer {
-            background-color: #333;
-            color: #fff;
-            text-align: center;
-            padding: 10px 0;
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-        }
-    </style>
-</head>
-<body>
-    <!-- seccion de navegación -->
-    <header>
-        <link rel="stylesheet" href="{{url_for('static', filename='css/navbar.css')}}">
-        <nav class="navbar">
-            <a href="/">
-                <div class="logo">
-                    <img src="static', filename='\img\escudo.png" alt="Logo de la Escuela Metropolitana">
-                </div>
-            </a>
-            <div class="nav-links">
-                <a href="{{ url_for('home') }}">Inicio</a>
-                <button onclick="location.href='/login'">Iniciar Sesión</button>
-                <button onclick="window.open('https://drive.google.com/drive/folders/1_KaG49wXNkGXqzzUBkdRa_20Y1rzBaaG?usp=drive_link', '_blank')">Metro-Market</button>
-            </div>
-        </nav>
-    </header>
+<title>{{ titulo }}</title>
+<link rel="icon" type="image/png" href="{{ url_for('static', filename='../static/img/escudo.png') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/navbar.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/instrucciones.css') }}">
+
+<nav class="navbar">
+    <a href="/">
+        <div class="logo">
+            <img src="../../static/img/escudo.png" alt="Logo de la Escuela Metropolitana">
+        </div>
+    </a>
     
-    <!-- seccion principal -->
+   <div class="nav-links">
+        <button onclick="window.location.href='/'">Regresar</button>
+    </div>
+</nav>
+
+<!-- seccion principal -->
     <main class="main">
         <h1> Instrucciones del juego Metro-Market </h1>
         <div class="instructions">
             <div class="instruction-item">
-                <img src="mouse_image.png" alt="Mouse para mover la dirección de la cámara">
+                <img src="../static/img/mouse.jpg" alt="Mouse para mover la dirección de la cámara">
                 <p>Usa el mouse para mover la dirección de la cámara</p>
             </div>
             <div class="instruction-item">
-                <img src="keyboard_arrow_keys.png" alt="Flechas del teclado para mover al personaje">
+                <img src="../static/img/flechas.jpg" alt="Flechas del teclado para mover al personaje">
                 <p>Usa las flechas del teclado para mover al personaje (avanzar y retroceder)</p>
             </div>
             <div class="instruction-item">
-                <img src="keyboard_wasd_keys.png" alt="Teclas AWSD para mover al personaje">
+                <img src="../static/img/awsd.jpg" alt="Teclas AWSD para mover al personaje">
                 <p>Usa las teclas "A", "W", "S", "D" para mover al personaje (avanzar y retroceder)</p>
             </div>
             <div class="instruction-item">
-                <img src="mouse_move_image.png" alt="Mueve el cursor del teclado para mover la dirección de la cámara">
-                <p>Mueve el cursor del teclado para mover la dirección de la cámara</p>
+                <img src="../static/img/tap.jpg" alt="Mueve el trackpad del teclado para mover la dirección de la cámara">
+                <p>Mueve el trackpad del teclado para mover la dirección de la cámara</p>
             </div>
         </div>
     </main>
 
-    <!-- pie de pagina -->
-    <footer>
-        {% include "shared/footer.html" %}
-    </footer>
-
-    <!-- script de bootstrap -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
-</body>
-</html>
+<footer>
+    {% include "shared/footer.html" %}
+</footer>

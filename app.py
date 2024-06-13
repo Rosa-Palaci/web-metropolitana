@@ -61,6 +61,13 @@ def instrucciones():
     titulo = "Instrucciones"
     return render_template('instrucciones.html', titulo=titulo)
 
+
+# administracion
+@app.route('/administracion')
+def administracion():
+    titulo = "administracion"
+    return render_template('administracion.html', titulo=titulo)
+
 # profesor
 @app.route('/profesor')
 def profesor():
